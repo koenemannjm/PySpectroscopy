@@ -3,12 +3,6 @@ import sys
 import ctypes
 import numpy as np
 
-# Setting the pointer to the local C-Drivers for the picosdk windows install
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DRIVER_PATH = os.path.join(BASE_DIR, "drivers", "win64")
-if sys.platform == "win32" and hasattr(os, "add_dll_directory"):
-    os.add_dll_directory(DRIVER_PATH)
-
 from picosdk.ps2000 import ps2000
 from picosdk.functions import adc2mV
 
@@ -36,22 +30,22 @@ class PicoScope2204A:
     def configure_channels(self, chA_enable, chA_coupling, chA_range, chB_enable, chB_coupling, chB_range):
 
         if chA_enable != 1 or chA_enable != 0:
-                    raise ValueError(f"Invalid enable value! 0 = not enabled, 1 = enabled")
+            raise ValueError(f"Invalid enable value! 0 = not enabled, 1 = enabled")
 
         if chA_coupling != 1 or chA_coupling != 0:
             raise ValueError(f"Invalid coupling value! 0 = AC, 1 = DC")
 
         if chA_range > 10 or chA_range < 1:
-                    raise ValueError(f"Invalid range value! \n 1=±20mV, 2=±50mV, 3=±100mV, 4=±200mV, 5=±500mV, 6=±1V, 7=±2V, 8=±5V, 9=±10V, 10=±20V")
+            raise ValueError(f"Invalid range value! \n 1=±20mV, 2=±50mV, 3=±100mV, 4=±200mV, 5=±500mV, 6=±1V, 7=±2V, 8=±5V, 9=±10V, 10=±20V")
 
         if chB_enable != 1 or chB_enable != 0:
-                            raise ValueError(f"Invalid enable value! 0 = not enabled, 1 = enabled")
+            raise ValueError(f"Invalid enable value! 0 = not enabled, 1 = enabled")
 
         if chB_coupling != 1 or chB_coupling != 0:
             raise ValueError(f"Invalid coupling value! 0 = AC, 1 = DC")
 
         if chB_range > 10 or chB_range < 1:
-                    raise ValueError(f"Invalid range value! \n 1=±20mV, 2=±50mV, 3=±100mV, 4=±200mV, 5=±500mV, 6=±1V, 7=±2V, 8=±5V, 9=±10V, 10=±20V")
+            raise ValueError(f"Invalid range value! \n 1=±20mV, 2=±50mV, 3=±100mV, 4=±200mV, 5=±500mV, 6=±1V, 7=±2V, 8=±5V, 9=±10V, 10=±20V")
 
         if not self.is_open:
             raise RuntimeError("PicoScope was not connected.")
@@ -67,10 +61,10 @@ class PicoScope2204A:
         self.ch_config["ChB_coupling"] = chB_coupling
         self.ch_config["ChB_range"] = chB_range
 
-        print("Channel A & B configured.")
-
         if self.status["setChA"] == 0 or self.status["setChB"] == 0:
             raise RuntimeError("Failed to apply channel configuration settings to hardware.")
+
+        print("Channel A & B configured.")
 
 
     def block_capture(self, num_samples=2_000):
